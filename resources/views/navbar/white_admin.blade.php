@@ -148,11 +148,11 @@
                     $criterias = Auth::user()->criteria;
                 @endphp
 
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown criteria-dropdown">
                     <a href="#" class="nav-link" onclick="toggleDropdown(event, 'dropdownKriteria')">
                         Kriteria ▾
                     </a>
-                    <ul class="dropdown-menu" id="dropdownKriteria">
+                    <ul class="dropdown-menu criteria-dropdown-menu" id="dropdownKriteria">
                         @forelse ($criterias as $criteria)
                             <li>
                                 <a href="{{ route('entries.by.criteria', ['criteria' => $criteria->id]) }}"

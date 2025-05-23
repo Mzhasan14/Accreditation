@@ -121,6 +121,46 @@
             background-color: #f0f0f0;
         }
 
+        /* Style khusus untuk dropdown kriteria */
+        .criteria-dropdown {
+            position: relative;
+        }
+
+        .criteria-dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            min-width: 220px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 8px 0;
+            margin-top: 4px;
+            border-radius: 8px;
+            z-index: 1000;
+            list-style: none;
+        }
+
+        .criteria-dropdown-menu li {
+            padding: 0;
+        }
+
+        .criteria-dropdown-menu .dropdown-item {
+            padding: 10px 16px;
+            display: block;
+            width: 100%;
+            color: #333;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .criteria-dropdown-menu .dropdown-item:hover {
+            background-color: #f0f0f0;
+            color: #000;
+        }
+
+        .criteria-dropdown-menu .text-muted {
+            color: #888 !important;
+        }
+
         #contact {
             scroll-margin-top: 80px;
             /* offset untuk scroll supaya tidak tertutup navbar */
@@ -145,21 +185,27 @@
                 </li>
 
                 <!-- Kriteria Dropdown -->
-                <li class="nav-item dropdown">
-                    <a href="#" class="nav-link"
-                        onclick="toggleDropdown(event, 'dropdownKriteriaValidator')">Kriteria ▾</a>
-                    <ul class="dropdown-menu" id="dropdownKriteriaValidator">
+                <li class="nav-item dropdown criteria-dropdown">
+                    <a href="#" class="nav-link" onclick="toggleDropdown(event, 'dropdownKriteriaValidator')">
+                        Kriteria ▾
+                    </a>
+                    <ul class="dropdown-menu criteria-dropdown-menu" id="dropdownKriteriaValidator">
                         @forelse ($criteriaList as $criteria)
                             <li>
-                                <a href="{{ route('validation.by.criteria', $criteria->id) }}">
+                                <a class="dropdown-item" href="{{ route('validation.by.criteria', $criteria->id) }}">
                                     {{ $criteria->name }}
                                 </a>
                             </li>
                         @empty
-                            <li><span class="dropdown-item">Tidak ada kriteria untuk divalidasi</span></li>
+                            <li>
+                                <span class="dropdown-item text-muted fst-italic">
+                                    Tidak ada kriteria untuk divalidasi
+                                </span>
+                            </li>
                         @endforelse
                     </ul>
                 </li>
+
 
 
 
