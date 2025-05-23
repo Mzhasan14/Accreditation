@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Criteria;
+use Dotenv\Parser\Entry;
+use Illuminate\Http\Request;
 use App\Models\AccreditationEntry;
 use App\Models\AccreditationSection;
-use App\Models\Criteria;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AccreditationEntryController extends Controller
@@ -34,6 +35,13 @@ class AccreditationEntryController extends Controller
 
         return view('admin.accreditation.entries.create', compact('sections', 'criteria'));
     }
+
+    public function show($id)
+    {
+        $entry = AccreditationEntry::with('section')->findOrFail($id);
+        return view('admin.accreditation.entries.show', compact('entry'));
+    }
+
 
     public function store(Request $request, $criteriaId)
     {

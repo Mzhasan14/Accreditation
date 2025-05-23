@@ -5,6 +5,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ValidationController;
 use App\Http\Controllers\AccreditationEntryController;
+use App\Models\AccreditationEntry;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +24,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 
 // Landing
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 // Admin
@@ -49,6 +50,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/entries/{entry}/edit', [AccreditationEntryController::class, 'edit'])
         ->name('entries.edit');
 
+    Route::get('/entries/{entry}', [AccreditationEntryController::class, 'show'])->name('show');
+
     // ✅ Update entry
     Route::put('/entries/{entry}', [AccreditationEntryController::class, 'update'])
         ->name('entries.update');
@@ -64,9 +67,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 // Validator
 Route::middleware(['auth', 'role:validator1,validator2'])->group(function () {
-   Route::get('/validator/dashboard', function () {
-    return view('validator.dashboard');
-})->name('dashboard_validator');
+    Route::get('/validator/dashboard', function () {
+        return view('validator.dashboard');
+    })->name('dashboard_validator');
 
 
     // Route baru untuk list validation filtered by criteria

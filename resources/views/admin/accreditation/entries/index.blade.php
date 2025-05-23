@@ -111,7 +111,7 @@
     <div class="accreditation-wrapper">
         <div class="header">
             <h2>My Accreditation Entries</h2>
-           <a href="{{ route('entries.create.by.criteria', $criteria->id) }}" class="btn-add">+ Add New Entry</a>
+            <a href="{{ route('entries.create.by.criteria', $criteria->id) }}" class="btn-add">+ Add New Entry</a>
         </div>
         <table>
             <thead>
@@ -132,7 +132,9 @@
                             </span>
                         </td>
                         <td class="action-buttons">
-                            @if ($entry->status === 'draft' || $entry->status === 'revised' || $entry->status === 'revised')
+                            <a href="{{ route('show', $entry->id) }}">View</a>
+
+                            @if ($entry->status === 'draft' || $entry->status === 'revised')
                                 <a href="{{ route('entries.edit', $entry->id) }}">Edit</a>
 
                                 <form id="submit-form-{{ $entry->id }}" action="{{ route('entries.submit', $entry->id) }}"
@@ -144,6 +146,7 @@
                                 <span style="color: gray;">No actions available</span>
                             @endif
                         </td>
+
                     </tr>
                 @endforeach
             </tbody>
