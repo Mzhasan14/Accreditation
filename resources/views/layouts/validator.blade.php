@@ -140,6 +140,7 @@
             /* Darker green on hover */
         }
     </style>
+
 </head>
 
 <body>
@@ -153,6 +154,23 @@
     <div class="content">
         @yield('content')
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if (session('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Sukses',
+                    text: @json(session('success')),
+                    confirmButtonText: 'OK'
+                });
+            });
+        </script>
+    @endif
+
+
 </body>
 
 </html>

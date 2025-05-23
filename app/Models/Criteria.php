@@ -14,5 +14,9 @@ class Criteria extends Model
     {
         return $this->hasMany(AccreditationSection::class);
     }
-}
 
+    public function admins()
+    {
+        return $this->belongsToMany(User::class, 'admin_criteria', 'criteria_id', 'admin_id');
+    }
+}

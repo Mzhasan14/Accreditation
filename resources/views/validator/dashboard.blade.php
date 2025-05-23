@@ -372,6 +372,21 @@
         ©Copyright Kelompok 4 - King Paudra, 2025
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if (session('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Sukses',
+                    text: @json(session('success')),
+                    confirmButtonText: 'OK'
+                });
+            });
+        </script>
+    @endif
+
     <script>
         let currentIndex = 0;
         const newsItems = document.querySelectorAll('.news-item');

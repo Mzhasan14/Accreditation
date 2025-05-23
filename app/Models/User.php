@@ -57,4 +57,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(AccreditationComment::class);
     }
+
+    public function criteria()
+    {
+        return $this->belongsToMany(Criteria::class, 'admin_criteria', 'admin_id', 'criteria_id');
+    }
 }

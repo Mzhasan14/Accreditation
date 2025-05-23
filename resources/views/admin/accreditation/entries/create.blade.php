@@ -103,7 +103,7 @@
     </style>
 
     <div class="entry-create-wrapper">
-        <h2>Create New Entries for Kriteria: {{ $criteria->name }}</h2>
+        <h2>Create New Entries for {{ $criteria->name }}</h2>
 
         @if (session('comment'))
             <div class="alert">

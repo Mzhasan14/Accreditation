@@ -144,19 +144,27 @@
                     </a>
                 </li>
                 <!-- Kriteria Dropdown -->
+                @php
+                    $criterias = Auth::user()->criteria;
+                @endphp
+
                 <li class="nav-item dropdown">
-                    <a href="#" class="nav-link" onclick="toggleDropdown(event, 'dropdownKriteria')">Kriteria
-                        ▾</a>
+                    <a href="#" class="nav-link" onclick="toggleDropdown(event, 'dropdownKriteria')">
+                        Kriteria ▾
+                    </a>
                     <ul class="dropdown-menu" id="dropdownKriteria">
-                        @foreach ($criterias as $criteria)
+                        @forelse ($criterias as $criteria)
                             <li>
                                 <a href="{{ route('entries.by.criteria', ['criteria' => $criteria->id]) }}"
                                     rel="noopener noreferrer">
                                     {{ $criteria->name }}
                                 </a>
                             </li>
-                        @endforeach
+                        @empty
+                            <li><span class="dropdown-item">Tidak ada kriteria</span></li>
+                        @endforelse
                     </ul>
+
 
                     <!-- Denah Gedung Dropdown -->
                 <li class="nav-item dropdown">

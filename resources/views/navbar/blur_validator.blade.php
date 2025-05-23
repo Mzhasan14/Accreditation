@@ -149,18 +149,22 @@
                     <a href="#" class="nav-link"
                         onclick="toggleDropdown(event, 'dropdownKriteriaValidator')">Kriteria ▾</a>
                     <ul class="dropdown-menu" id="dropdownKriteriaValidator">
-                        @foreach ($criterias as $criteria)
+                        @forelse ($criteriaList as $criteria)
                             <li>
                                 <a href="{{ route('validation.by.criteria', $criteria->id) }}">
                                     {{ $criteria->name }}
                                 </a>
                             </li>
-                        @endforeach
+                        @empty
+                            <li><span class="dropdown-item">Tidak ada kriteria untuk divalidasi</span></li>
+                        @endforelse
                     </ul>
+                </li>
 
 
 
-                    <!-- Denah Gedung Dropdown -->
+
+                <!-- Denah Gedung Dropdown -->
                 <li class="nav-item dropdown">
                     <a href="#" class="nav-link" onclick="toggleDropdown(event, 'dropdownDenah')">Denah Gedung
                         ▾</a>

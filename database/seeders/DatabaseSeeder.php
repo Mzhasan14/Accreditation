@@ -18,13 +18,29 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
-            'name' => 'Admin',
-            'email' => 'admin@example.com',
+        // Buat tiga user admin
+        $admin1 = User::create([
+            'name' => 'Admin 1',
+            'email' => 'admin1@example.com',
             'password' => Hash::make('123'),
             'role' => 'admin'
         ]);
 
+        $admin2 = User::create([
+            'name' => 'Admin 2',
+            'email' => 'admin2@example.com',
+            'password' => Hash::make('123'),
+            'role' => 'admin'
+        ]);
+
+        $admin3 = User::create([
+            'name' => 'Admin 3',
+            'email' => 'admin3@example.com',
+            'password' => Hash::make('123'),
+            'role' => 'admin'
+        ]);
+
+        // Tambahkan validator
         User::create([
             'name' => 'Validator 1',
             'email' => 'v1@example.com',
@@ -39,13 +55,8 @@ class DatabaseSeeder extends Seeder
             'role' => 'validator2'
         ]);
 
-         $sections = [
-            'Penetapan',
-            'Pelaksanaan',
-            'Evaluasi',
-            'Pengendalian',
-            'Peningkatan',
-        ];
+        // Kriteria dan section
+        $sections = ['Penetapan', 'Pelaksanaan', 'Evaluasi', 'Pengendalian', 'Peningkatan'];
 
         foreach (range(1, 3) as $i) {
             $criteria = Criteria::create([
@@ -58,6 +69,10 @@ class DatabaseSeeder extends Seeder
                     'name' => $sectionName
                 ]);
             }
+
+            // Hubungkan admin ke kriteria sesuai urutan
+            $adminVar = ${"admin$i"}; // ambil variabel $admin1, $admin2, dll secara dinamis
+            $adminVar->criteria()->attach([$criteria->id]);
         }
     }
 }

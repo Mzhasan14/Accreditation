@@ -10,16 +10,22 @@ use Illuminate\Support\Facades\Auth;
 
 class AccreditationEntryController extends Controller
 {
-    public function index($criteriaId)
+    public function index(Request $request, Criteria $criteria)
     {
-        $criteria = Criteria::with('sections.entries')->findOrFail($criteriaId);
+        $admin = Auth::user();
 
-        $entries = AccreditationEntry::whereHas('section', function ($query) use ($criteriaId) {
-            $query->where('criteria_id', $criteriaId);
-        })->where('admin_id', Auth::id())->get();
+        // Pastikan admin hanya melihat criteria yang dia punya
+        if (!$admin->criteria->contains($criteria)) {
+            abort(403, 'Anda tidak memiliki akses ke kriteria ini.');
+        }
+
+        $entries = AccreditationEntry::whereHas('section', function ($query) use ($criteria) {
+            $query->where('criteria_id', $criteria->id);
+        })->where('admin_id', $admin->id)->get();
 
         return view('admin.accreditation.entries.index', compact('entries', 'criteria'));
     }
+
 
     public function create($criteriaId)
     {

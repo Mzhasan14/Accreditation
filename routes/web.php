@@ -64,9 +64,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 // Validator
 Route::middleware(['auth', 'role:validator1,validator2'])->group(function () {
-    Route::get('/validator/dashboard', function () {
-        return view('validator.dashboard');
-    })->name('dashboard_validator');
+   Route::get('/validator/dashboard', function () {
+    return view('validator.dashboard');
+})->name('dashboard_validator');
+
 
     // Route baru untuk list validation filtered by criteria
     Route::get('/validation/criteria/{criteria}', [ValidationController::class, 'indexByCriteria'])

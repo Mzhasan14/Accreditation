@@ -16,13 +16,22 @@ class ValidationController extends Controller
         $level = Auth::user()->role === 'validator1' ? 1 : 2;
         $status = $level === 1 ? 'submitted' : 'approved_lvl1';
 
+        // Ambil entri yang belum divalidasi sesuai level
         $entries = AccreditationEntry::where('status', $status)
             ->with('section.criteria')
             ->get();
 
-        $criteriaList = Criteria::all(); // ambil semua criteria
+        // Ambil ID kriteria yang punya entri dengan status sesuai
+        $criteriaIds = $entries->pluck('section.criteria.id')->unique();
 
-        return view('validator.validation.index', compact('entries', 'level', 'criteriaList'));
+        // Filter kriteria yang hanya punya entri untuk divalidasi
+        $criteriaList = Criteria::whereIn('id', $criteriaIds)->get();
+
+        return view('validator.validation.index', [
+            'entries' => $entries,
+            'level' => $level,
+            'criteriaList' => $criteriaList
+        ]);
     }
 
     public function indexByCriteria($criteriaId)
@@ -30,6 +39,7 @@ class ValidationController extends Controller
         $level = Auth::user()->role === 'validator1' ? 1 : 2;
         $status = $level === 1 ? 'submitted' : 'approved_lvl1';
 
+        // Ambil entri dengan kriteria yang dimaksud dan status yang sesuai
         $entries = AccreditationEntry::where('status', $status)
             ->whereHas('section', function ($query) use ($criteriaId) {
                 $query->where('criteria_id', $criteriaId);
@@ -37,10 +47,20 @@ class ValidationController extends Controller
             ->with('section.criteria')
             ->get();
 
-        $criteriaList = Criteria::all();
+        // Ambil kriteria lain yang masih perlu divalidasi
+        $allEntries = AccreditationEntry::where('status', $status)
+            ->with('section.criteria')->get();
 
-        return view('validator.validation.index', compact('entries', 'level', 'criteriaList'));
+        $criteriaIds = $allEntries->pluck('section.criteria.id')->unique();
+        $criteriaList = Criteria::whereIn('id', $criteriaIds)->get();
+
+        return view('validator.validation.index', [
+            'entries' => $entries,
+            'level' => $level,
+            'criteriaList' => $criteriaList
+        ]);
     }
+
 
     public function show(AccreditationEntry $entry)
     {
@@ -79,6 +99,16 @@ class ValidationController extends Controller
             ]);
         }
 
-        return redirect()->route('validation.index')->with('success', 'Validation recorded.');
+        // Ambil level dan status target berikutnya
+        $status = $level === 1 ? 'submitted' : 'approved_lvl1';
+
+        // Cek apakah masih ada entri lain yang butuh divalidasi
+        $remaining = AccreditationEntry::where('status', $status)->exists();
+
+        if ($remaining) {
+            return redirect()->route('validation.index')->with('success', 'Validation recorded.');
+        } else {
+            return redirect()->route('dashboard_validator')->with('success', 'Validation recorded. Semua entri telah divalidasi.');
+        }
     }
 }
